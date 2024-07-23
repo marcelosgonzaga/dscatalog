@@ -26,7 +26,7 @@ public class CategoryService {
 	
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
-		Page<Category> list =  repository.findAll(pageRequest);
+		Page<Category> list = repository.findAll(pageRequest);
 		return list.map(x -> new CategoryDTO(x));
 	}
 
@@ -47,10 +47,11 @@ public class CategoryService {
 		
 	}
 	
+
 	@Transactional
 	public CategoryDTO update(Long id,  CategoryDTO dto) {
 		try {
-			Category entity = repository.getOne(id);
+			Category entity = repository.getReferenceById(id);
 			entity.setName(dto.getName());
 			entity = repository.save(entity);
 			return new CategoryDTO(entity);
@@ -71,7 +72,5 @@ public class CategoryService {
 		catch (DataIntegrityViolationException e){
 			throw new DatabaseException ("Integrety Violatin");
 		}
-		
 	}
-
 }
